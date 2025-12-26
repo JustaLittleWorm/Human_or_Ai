@@ -1,0 +1,32 @@
+version: 2.1
+
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.13
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            pip install pytest pytest-cov
+
+      - run:
+          name: Run tests with coverage
+          command: |
+            pytest --cov=app --cov-report=xml
+
+      - sonarcloud/scan
+
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud

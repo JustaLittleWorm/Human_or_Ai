@@ -1,0 +1,6 @@
+[run]
+source = app.py
+
+[report]
+omit =
+    app.py
